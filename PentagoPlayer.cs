@@ -7,9 +7,8 @@
         public PlayerType playerType;
         public Player assignedPlayer;
 
-        public PentagoPlayer(Player assignedPlayer, PlayerType type)
+        public PentagoPlayer(PlayerType type)
         {
-            this.assignedPlayer = assignedPlayer;
             this.playerType = type;
         }
 
@@ -26,6 +25,11 @@
         public void SetBoard(Pentago pentago)
         {
             this.pentago = pentago;
+        }
+
+        public void SetPlayer(Player player)
+        {
+            this.assignedPlayer = player;
         }
     }
 }

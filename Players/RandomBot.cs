@@ -6,9 +6,9 @@ namespace PentagoMinMax
     {
         Random rnd = new Random();
 
-        public RandomBot(Player assignedPlayer) : base(assignedPlayer, PlayerType.Random)
+        public RandomBot() : base(PlayerType.Random)
         {
-            rnd = new Random();
+
         }
 
         public override void PlaceRock()

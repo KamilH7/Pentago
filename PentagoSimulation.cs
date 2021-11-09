@@ -9,24 +9,21 @@ namespace PentagoMinMax
         PentagoPlayer player2 = null;
         bool automatic = true;
 
-        public PentagoSimulation(Pentago pentago, PentagoPlayer player1, PentagoPlayer player2, bool automatic)
+        public PentagoSimulation(Pentago pentago, PentagoPlayer player1, PentagoPlayer player2)
         {
-            if ((player1.assignedPlayer == Player.Player1 && player2.assignedPlayer == Player.Player2) || (player1.assignedPlayer == Player.Player2 && player2.assignedPlayer == Player.Player1))
-            {
-                this.automatic = automatic;
-                this.pentago = pentago;
-                player1.SetBoard(pentago);
-                player2.SetBoard(pentago);
-                this.player1 = player1;
-                this.player2 = player2;
-            }
-            else
-            {
-                Console.WriteLine("Bots have to be on opposing sides");
-            }
+            this.automatic = automatic;
+
+            this.pentago = pentago;
+            player1.SetBoard(pentago);
+            player2.SetBoard(pentago);
+
+            this.player1 = player1;
+            player1.SetPlayer(Player.Player1);
+            this.player2 = player2;
+            player1.SetPlayer(Player.Player2);
         }
 
-        public WinType StartSimulation()
+        public WinType StartSimulation(bool automatic)
         {
             if (pentago != null)
             {

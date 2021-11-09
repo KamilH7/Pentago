@@ -7,7 +7,7 @@ namespace PentagoMinMax
         Random rnd = new Random();
         int searchDepth;
 
-        public MiniMaxBot(Player assignedPlayer, int searchDepth) : base(assignedPlayer, PlayerType.MiniMax)
+        public MiniMaxBot(int searchDepth) : base(PlayerType.MiniMax)
         {
             this.searchDepth = searchDepth;
         }
@@ -165,7 +165,7 @@ namespace PentagoMinMax
             Field[,] board = pentago.getBoard();
             //pentago.PrintBoard();
             double opponentCost = 0;
-            double botCost = 0;
+            double playerCost = 0;
 
             //for every field
             for (int i = 0; i < 6; ++i)
@@ -275,36 +275,36 @@ namespace PentagoMinMax
                 }
             }
 
-            void AddCost(Player player, int InARow)
+            void AddCost(Player player, int offset)
             {
                 if (player == assignedPlayer)
                 {
-                    if (InARow == 0)
+                    if (offset == 0)
                     {
-                        botCost += 0.25;
+                        playerCost += 0.25;
                     }
-                    else if (InARow == 4)
+                    else if (offset == 4)
                     {
-                        botCost += Double.PositiveInfinity;
+                        playerCost += Double.PositiveInfinity;
                     }
                     else
                     {
-                        botCost += Math.Pow(2, InARow * 2);
+                        playerCost += Math.Pow(2, offset * 2);
                     }
                 }
                 else if (player != assignedPlayer)
                 {
-                    if (InARow == 0)
+                    if (offset == 0)
                     {
-                        opponentCost += 0.25;
+                        opponentCost += 0.25 -0.1;
                     }
-                    else if (InARow == 4)
+                    else if (offset == 4)
                     {
                         opponentCost += Double.PositiveInfinity;
                     }
                     else
                     {
-                        opponentCost += Math.Pow(2, InARow * 2);
+                        opponentCost += Math.Pow(2, offset * 2) - 1;
                     }
                 }
             }
@@ -328,7 +328,7 @@ namespace PentagoMinMax
                 }
             }
 
-            double cost = (double)botCost - (double)opponentCost;
+            double cost = (double)playerCost - (double)opponentCost;
 
             return cost;
         }
