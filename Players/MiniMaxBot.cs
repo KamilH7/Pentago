@@ -7,6 +7,11 @@ namespace PentagoMinMax
         Random rnd = new Random();
         int searchDepth;
 
+        protected MiniMaxBot(Player assignedPlayer, int searchDepth, PlayerType playerType) : base(assignedPlayer, playerType)
+        {
+            this.searchDepth = searchDepth;
+        }
+
         public MiniMaxBot(Player assignedPlayer, int searchDepth) : base(assignedPlayer, PlayerType.MiniMax)
         {
             this.searchDepth = searchDepth;
@@ -72,7 +77,7 @@ namespace PentagoMinMax
             pentago.RotateSegment(chosenX, chosenY, rotateClockwise);
         }
 
-        public double MiniMax(Pentago pentago, int depth, bool maximizing, bool rotating)
+        protected virtual double MiniMax(Pentago pentago, int depth, bool maximizing, bool rotating)
         {
             if (depth == 0 || pentago.CheckWinType() != WinType.None)
             {
@@ -160,7 +165,7 @@ namespace PentagoMinMax
             }
         }
 
-        public double CalculateBoardValue(Pentago pentago)
+        protected double CalculateBoardValue(Pentago pentago)
         {
             Field[,] board = pentago.getBoard();
             //pentago.PrintBoard();

@@ -19,6 +19,7 @@
     {
         Human,
         Random,
-        MiniMax
+        MiniMax,
+        NegaMax
     }
 }
