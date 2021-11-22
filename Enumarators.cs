@@ -20,6 +20,7 @@
         Human,
         Random,
         MiniMax,
-        NegaMax
+        NegaMax,
+        AplhaBeta
     }
 }
