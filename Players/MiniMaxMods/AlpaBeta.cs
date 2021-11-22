@@ -2,9 +2,9 @@
 
 namespace PentagoMinMax
 {
-    class AlphaBeta : MiniMaxBot
+    class AlpaBeta : MiniMaxBot
     {
-        public AlphaBeta(Player assignedPlayer, int searchDepth) : base(assignedPlayer, searchDepth, PlayerType.AlphaBeta)
+        public AlpaBeta(Player assignedPlayer, int searchDepth) : base(assignedPlayer, searchDepth, PlayerType.AplhaBeta)
         {
 
         }

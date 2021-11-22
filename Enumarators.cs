@@ -21,6 +21,6 @@
         Random,
         MiniMax,
         NegaMax,
-        AlphaBeta
+        AplhaBeta
     }
 }

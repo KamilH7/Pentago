@@ -22,7 +22,7 @@ namespace PentagoMinMax
 
             NegaMax player1 = new NegaMax(Player.Player1, 5);
             //MiniMaxBot player1 = new MiniMaxBot(Player.Player1, 2);
-            AlphaBeta player2 = new AlphaBeta(Player.Player2, 5);
+            AlpaBeta player2 = new AlpaBeta(Player.Player2, 5);
             //RandomBot player2 = new RandomBot(Player.Player2);
 
             const double numOfSimulations = 1;
