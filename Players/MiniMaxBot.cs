@@ -2,10 +2,9 @@
 
 namespace PentagoMinMax
 {
-    class MiniMaxBot : PentagoPlayer
+    abstract class MiniMaxBot : PentagoPlayer
     {
-        Random rnd = new Random();
-        int searchDepth;
+        protected int searchDepth;
 
         protected MiniMaxBot(Player assignedPlayer, int searchDepth, PlayerType playerType) : base(assignedPlayer, playerType)
         {
@@ -31,8 +30,9 @@ namespace PentagoMinMax
                     if (pentago.CheckIfPossiblePlacement(i, j))
                     {
                         Pentago newBoard = new Pentago(pentago.copyBoard());
-                        newBoard.PlaceRock(assignedPlayer, i, j);
-                        double newValue = MiniMax(newBoard, searchDepth, true, true);
+                        newBoard.PlaceRock(assignedPlayer,i,j);
+                        double newValue = GetBoardValueAfterRockPlacement(newBoard);
+
                         if (bestValue < newValue)
                         {
                             bestValue = newValue;
@@ -45,6 +45,8 @@ namespace PentagoMinMax
 
             pentago.PlaceRock(assignedPlayer, chosenX, chosenY);
         }
+
+        protected abstract double GetBoardValueAfterRockPlacement(Pentago board);
 
         public override void RotateSegment()
         {
@@ -62,7 +64,8 @@ namespace PentagoMinMax
                     {
                         Pentago newBoard = new Pentago(pentago.copyBoard());
                         newBoard.RotateSegment(i, j, k == 1 ? true : false);
-                        double newValue = MiniMax(newBoard, searchDepth, false, false);
+                        double newValue = GetBoardValueAfterSegmentRotation(newBoard);
+
                         if (bestValue < newValue)
                         {
                             bestValue = newValue;
@@ -77,98 +80,12 @@ namespace PentagoMinMax
             pentago.RotateSegment(chosenX, chosenY, rotateClockwise);
         }
 
-        protected virtual double MiniMax(Pentago pentago, int depth, bool maximizing, bool rotating)
-        {
-            if (depth == 0 || pentago.CheckWinType() != WinType.None)
-            {
-                return CalculateBoardValue(pentago);
-            }
-
-            if (maximizing)
-            {
-                double bestValue = Double.NegativeInfinity;
-
-                if (!rotating)
-                {
-                    for (int i = 0; i < 6; ++i)
-                    {
-                        //possible y placement
-                        for (int j = 0; j < 6; ++j)
-                        {
-                            if (!pentago.CheckIfPossiblePlacement(i, j))
-                                continue;
-
-                            Pentago newPosition = new Pentago(pentago.copyBoard());
-                            newPosition.PlaceRock(assignedPlayer, i, j);
-                            Double newValue = MiniMax(newPosition, depth, true, true);
-                            bestValue = Math.Max(bestValue, newValue);
-                        }
-                    }
-                    return bestValue;
-                }
-                else
-                {
-                    for (int i = 0; i < 2; ++i)
-                    {
-                        for (int j = 0; j < 2; ++j)
-                        {
-                            for (int k = 0; k < 2; ++k)
-                            {
-                                Pentago newPosition = new Pentago(pentago.copyBoard());
-                                newPosition.RotateSegment(i, j, k == 1 ? true : false);
-                                double newValue = MiniMax(newPosition, depth, false, false);
-                                bestValue = Math.Max(bestValue, newValue);
-                            }
-                        }
-                    }
-                    return bestValue;
-                }
-            }
-            else
-            {
-                double bestValue = Double.PositiveInfinity;
-
-                if (!rotating)
-                {
-                    for (int i = 0; i < 6; ++i)
-                    {
-                        for (int j = 0; j < 6; ++j)
-                        {
-                            if (!pentago.CheckIfPossiblePlacement(i, j))
-                                continue;
-                            Pentago newPosition = new Pentago(pentago.copyBoard());
-                            newPosition.PlaceRock(assignedPlayer == Player.Player1 ? Player.Player2 : Player.Player1, i, j);
-                            double newValue = MiniMax(newPosition, depth - 1, false, true);
-                            bestValue = Math.Min(bestValue, newValue);
-                        }
-                    }
-                    return bestValue;
-                }
-                else
-                {
-                    for (int i = 0; i < 2; ++i)
-                    {
-                        for (int j = 0; j < 2; ++j)
-                        {
-                            for (int k = 0; k < 2; ++k)
-                            {
-                                Pentago newPosition = new Pentago(pentago.copyBoard());
-                                newPosition.RotateSegment(i, j, k == 1 ? true : false);
-                                double newValue = MiniMax(newPosition, depth - 1, true, false);
-                                bestValue = Math.Min(bestValue, newValue);
-                            }
-                        }
-                    }
-
-                    return bestValue;
-                }
-            }
-        }
+        protected abstract double GetBoardValueAfterSegmentRotation(Pentago board);
 
         protected double CalculateBoardValue(Pentago pentago)
         {
             Field[,] board = pentago.getBoard();
-            //pentago.PrintBoard();
+
             double opponentCost = 0;
             double botCost = 0;
 

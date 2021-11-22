@@ -4,103 +4,102 @@ namespace PentagoMinMax
 {
     class PentagoSimulation
     {
-        Pentago pentago = null;
-        PentagoPlayer player1 = null;
-        PentagoPlayer player2 = null;
-        bool automatic = true;
+        private Pentago pentago = null;
+        private PentagoPlayer player1 = null;
+        private PentagoPlayer player2 = null;
 
-        public PentagoSimulation(Pentago pentago, PentagoPlayer player1, PentagoPlayer player2, bool automatic)
+        public double player1AvgMoveTime;
+        public double player2AvgMoveTime;
+
+        public PentagoSimulation(Pentago pentago, PentagoPlayer player1, PentagoPlayer player2)
         {
-            if ((player1.assignedPlayer == Player.Player1 && player2.assignedPlayer == Player.Player2) || (player1.assignedPlayer == Player.Player2 && player2.assignedPlayer == Player.Player1))
-            {
-                this.automatic = automatic;
-                this.pentago = pentago;
-                player1.SetBoard(pentago);
-                player2.SetBoard(pentago);
-                this.player1 = player1;
-                this.player2 = player2;
-            }
-            else
-            {
-                Console.WriteLine("Bots have to be on opposing sides");
-            }
+            this.pentago = pentago;
+
+            player1.SetBoard(pentago);
+            player1.assignedPlayer = Player.Player1;
+            player2.SetBoard(pentago);
+            player2.assignedPlayer = Player.Player2;
+
+            this.player1 = player1;
+            this.player2 = player2;
         }
+
+        int player1MoveAmount;
+        double player1MoveTime;
+        int player2MoveAmount;
+        double player2MoveTime;
 
         public WinType StartSimulation()
         {
-            if (pentago != null)
+            Random rnd = new Random();
+            DateTime beforeMoving;
+
+            //decide who moves first
+            PentagoPlayer currentPlayer = rnd.Next(0, 2) == 1 ? currentPlayer = player1 : currentPlayer = player2;
+
+            do
             {
-                WinType winType = WinType.None;
+                beforeMoving = DateTime.Now;
 
-                //decide who moves first
-                Random rnd = new Random();
-                PentagoPlayer currentPlayer = rnd.Next(0, 2) == 1 ? currentPlayer = player1 : currentPlayer = player2;
+                currentPlayer.PlaceRock();
 
-                if (!automatic)
+                AddMoveTime(beforeMoving, currentPlayer.assignedPlayer);
+
+                if (IsGameOver())
                 {
-                    Console.WriteLine("Player1 is " + player1.playerType.ToString());
-                    Console.WriteLine("Player2 is " + player2.playerType.ToString());
-
-                    pentago.PrintBoard();
-
-                    Console.WriteLine(currentPlayer.assignedPlayer.ToString() + " starts");
+                    CalculateAvgMoveTime();
+                    break;
                 }
 
-                do
+                beforeMoving = DateTime.Now;
+
+                currentPlayer.RotateSegment();
+
+                AddMoveTime(beforeMoving,currentPlayer.assignedPlayer);
+
+                if (IsGameOver())
                 {
-                    if (!automatic)
-                    {
-                        Console.ReadLine();
-                        Console.WriteLine(currentPlayer.assignedPlayer.ToString() + " Places a rock...");
-                    }
-
-                    currentPlayer.PlaceRock();
-                    winType = pentago.CheckWinType();
-
-
-                    if (winType != WinType.None)
-                        break;
-
-                    if (!automatic)
-                    {
-                        pentago.PrintBoard();
-                        Console.ReadLine();
-                        Console.WriteLine(currentPlayer.assignedPlayer.ToString() + " Rotates a segment...");
-                    }
-
-                    currentPlayer.RotateSegment();
-                    winType = pentago.CheckWinType();
-
-                    if (winType != WinType.None)
-                        break;
-
-                    if (!automatic)
-                    {
-                        pentago.PrintBoard();
-                        Console.ReadLine();
-                    }
-
-                    //switch player
-                    if (currentPlayer == player1)
-                        currentPlayer = player2;
-                    else
-                        currentPlayer = player1;
-
-                } while (true);
-
-                if (!automatic)
-                {
-                    Console.WriteLine(winType.ToString());
-                    pentago.PrintBoard();
+                    CalculateAvgMoveTime();
+                    break;
                 }
 
-                return winType;
+                //switch player
+                if (currentPlayer == player1)
+                    currentPlayer = player2;
+                else
+                    currentPlayer = player1;
+
+            } while (true);
+
+            return pentago.CheckWinType();
+        }
+
+        private bool IsGameOver()
+        {
+            return pentago.CheckWinType() != WinType.None ? true : false;
+        }
+
+        void AddMoveTime(DateTime then, Player player)
+        {
+
+            TimeSpan span = DateTime.Now - then;
+
+            if (player == Player.Player1)
+            {
+                player1MoveAmount++;
+                player1MoveTime += span.TotalMilliseconds;
             }
             else
             {
-                Console.WriteLine("Wrong settings");
-                return WinType.None;
+                player2MoveAmount++;
+                player2MoveTime += span.TotalMilliseconds;
             }
+        }
+
+        void CalculateAvgMoveTime()
+        {
+            player1AvgMoveTime = Math.Round(player1MoveTime / (double) player1MoveAmount,2);
+            player2AvgMoveTime = Math.Round(player2MoveTime / (double) player2MoveAmount,2);
         }
     }
 }
