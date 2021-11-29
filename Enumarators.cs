@@ -21,6 +21,8 @@
         Random,
         MiniMax,
         NegaMax,
-        AlphaBeta
+        AlphaBeta,
+        ABNegaMax,
+        ABNegaMaxSort
     }
 }
