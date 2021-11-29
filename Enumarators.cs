@@ -1,4 +1,4 @@
-﻿namespace PentagoMinMax
+﻿namespace Pentago
 {
     enum WinType
     {

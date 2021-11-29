@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace PentagoMinMax
+namespace Pentago
 {
-
     class Pentago
     {
         Field[,] board;

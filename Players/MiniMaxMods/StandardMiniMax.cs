@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PentagoMinMax
+namespace Pentago
 {
     class StandardMiniMax : MiniMaxBot
     {

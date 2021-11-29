@@ -1,14 +1,15 @@
 ﻿using System;
 
-namespace PentagoMinMax
+namespace Pentago
 {
     abstract class MiniMaxBot : PentagoPlayer
     {
         protected int searchDepth;
 
-        protected MiniMaxBot(Player assignedPlayer, int searchDepth, PlayerType playerType) : base(assignedPlayer, playerType)
+        protected MiniMaxBot(Player assignedPlayer, int searchDepth, PlayerType playerType) : base(playerType)
         {
             this.searchDepth = searchDepth;
+            this.assignedPlayer = assignedPlayer;
         }
 
         public MiniMaxBot(int searchDepth) : base(PlayerType.MiniMax)

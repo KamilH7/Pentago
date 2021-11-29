@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PentagoMinMax
+namespace Pentago
 {
     class Program
     {
@@ -20,12 +20,12 @@ namespace PentagoMinMax
             */
 
 
-            NegaMax player1 = new NegaMax(Player.Player1, 5);
+            ABNegaMaxSort player1 = new ABNegaMaxSort(Player.Player1, 3);
             //MiniMaxBot player1 = new MiniMaxBot(Player.Player1, 2);
-            AlphaBeta player2 = new AlphaBeta(Player.Player2, 5);
+            ABNegaMax player2 = new ABNegaMax(Player.Player2, 3);
             //RandomBot player2 = new RandomBot(Player.Player2);
 
-            const double numOfSimulations = 1;
+            const double numOfSimulations = 3;
             double numWonByPlayer1 = 0;
             double numWonByPlayer2 = 0;
             double numofDraws = 0;
