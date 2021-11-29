@@ -20,12 +20,10 @@ namespace Pentago
             */
 
 
-            ABNegaMaxSort player1 = new ABNegaMaxSort(Player.Player1, 3);
-            //MiniMaxBot player1 = new MiniMaxBot(Player.Player1, 2);
-            ABNegaMax player2 = new ABNegaMax(Player.Player2, 3);
-            //RandomBot player2 = new RandomBot(Player.Player2);
+            AlphaBetaSort player1 = new AlphaBetaSort(Player.Player1, 3);
+            AlphaBeta player2 = new AlphaBeta(Player.Player2, 3);
 
-            const double numOfSimulations = 3;
+            const double numOfSimulations = 1;
             double numWonByPlayer1 = 0;
             double numWonByPlayer2 = 0;
             double numofDraws = 0;
@@ -49,6 +47,7 @@ namespace Pentago
                 player1MoveTime += simulation.player1AvgMoveTime;
                 player2MoveTime += simulation.player2AvgMoveTime;
             }
+
             Console.Clear();
 
             Console.WriteLine("% won by Player1(" + player1.playerType.ToString() + "):" + 100 * numWonByPlayer1 / numOfSimulations);

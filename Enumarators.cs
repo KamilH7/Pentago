@@ -22,7 +22,6 @@
         MiniMax,
         NegaMax,
         AlphaBeta,
-        ABNegaMax,
-        ABNegaMaxSort
+        AlphaBetaSort
     }
 }
