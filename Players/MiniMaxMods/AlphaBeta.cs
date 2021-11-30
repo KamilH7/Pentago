@@ -4,6 +4,7 @@ namespace Pentago
 {
     class AlphaBeta : MiniMaxBot
     {
+
         public AlphaBeta(Player assignedPlayer, int searchDepth) : base(assignedPlayer, searchDepth, PlayerType.AlphaBeta)
         {
 
@@ -11,16 +12,18 @@ namespace Pentago
 
         protected override double GetBoardValueAfterRockPlacement(Pentago board)
         {
-            return AlphaBetaAlgorithm(board, searchDepth, true, true);
+            return AlphaBetaAlgorithm(board, searchDepth, true, true, Double.NegativeInfinity, Double.PositiveInfinity);
         }
 
         protected override double GetBoardValueAfterSegmentRotation(Pentago board)
         {
-            return AlphaBetaAlgorithm(board, searchDepth, false, false);
+            return AlphaBetaAlgorithm(board, searchDepth, false, false, Double.NegativeInfinity, Double.PositiveInfinity);
         }
 
-        private double AlphaBetaAlgorithm(Pentago pentago, int depth, bool maximizing, bool rotating, double alpha = Double.NegativeInfinity, double beta = Double.PositiveInfinity)
+        private double AlphaBetaAlgorithm(Pentago pentago, int depth, bool maximizing, bool rotating, double alpha , double beta)
         {
+            treeIterations++;
+
             if (depth == 0 || pentago.CheckWinType() != WinType.None)
             {
                 return CalculateBoardValue(pentago);
@@ -40,7 +43,7 @@ namespace Pentago
 
                             Pentago newPosition = new Pentago(pentago.copyBoard());
                             newPosition.PlaceRock(assignedPlayer, i, j);
-                            alpha = Math.Max(alpha, AlphaBetaAlgorithm(newPosition, depth - 1, true, true));
+                            alpha = Math.Max(alpha, AlphaBetaAlgorithm(newPosition, depth - 1, true, true, alpha, beta));
 
                             if (alpha >= beta)
                                 return beta;
@@ -58,7 +61,7 @@ namespace Pentago
                             {
                                 Pentago newPosition = new Pentago(pentago.copyBoard());
                                 newPosition.RotateSegment(i, j, k == 1 ? true : false);
-                                alpha = Math.Max(alpha, AlphaBetaAlgorithm(newPosition, depth - 1, false, false));
+                                alpha = Math.Max(alpha, AlphaBetaAlgorithm(newPosition, depth - 1, false, false, alpha, beta));
 
                                 if (alpha >= beta)
                                     return beta;
@@ -81,7 +84,7 @@ namespace Pentago
                                 continue;
                             Pentago newPosition = new Pentago(pentago.copyBoard());
                             newPosition.PlaceRock(assignedPlayer == Player.Player1 ? Player.Player2 : Player.Player1, i, j);
-                            beta = Math.Min(beta,AlphaBetaAlgorithm(newPosition, depth - 1, false, true));
+                            beta = Math.Min(beta,AlphaBetaAlgorithm(newPosition, depth - 1, false, true, alpha, beta));
 
                             if (alpha >= beta)
                                 return alpha;
@@ -100,7 +103,7 @@ namespace Pentago
                             {
                                 Pentago newPosition = new Pentago(pentago.copyBoard());
                                 newPosition.RotateSegment(i, j, k == 1 ? true : false);
-                                beta = Math.Min(beta, AlphaBetaAlgorithm(newPosition, depth - 1, true, false));
+                                beta = Math.Min(beta, AlphaBetaAlgorithm(newPosition, depth - 1, true, false, alpha, beta));
 
                                 if (alpha >= beta)
                                     return alpha;

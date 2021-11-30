@@ -3,6 +3,7 @@
 
     class PentagoPlayer
     {
+        public int treeIterations = 0;
         public Pentago pentago;
         public PlayerType playerType;
         public Player assignedPlayer;

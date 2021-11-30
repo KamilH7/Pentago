@@ -4,6 +4,7 @@ namespace Pentago
 {
     class NegaMax : MiniMaxBot
     {
+
         public NegaMax(Player assignedPlayer, int searchDepth) : base(assignedPlayer, searchDepth, PlayerType.NegaMax)
         {
 
@@ -21,6 +22,8 @@ namespace Pentago
 
         private double NegaMaxAlgorithm(Pentago pentago, int depth, bool rotating, int sign = 1)
         {
+            treeIterations++;
+
             if (depth == 0 || pentago.CheckWinType() != WinType.None)
             {
                 return sign * CalculateBoardValue(pentago);

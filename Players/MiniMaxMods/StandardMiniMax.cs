@@ -21,6 +21,8 @@ namespace Pentago
 
         private double MiniMaxAlgorithm(Pentago pentago, int depth, bool maximizing, bool rotating)
         {
+            treeIterations++;
+
             if (depth == 0 || pentago.CheckWinType() != WinType.None)
             {
                 return CalculateBoardValue(pentago);

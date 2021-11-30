@@ -13,6 +13,8 @@ namespace Pentago
 
         public override void PlaceRock()
         {
+            treeIterations++;
+
             int chosenX = 0;
             int chosenY = 0;
 
@@ -28,6 +30,8 @@ namespace Pentago
 
         public override void RotateSegment()
         {
+            treeIterations++;
+
             int chosenX = 0;
             int chosenY = 0;
             bool rotateClockwise = true;

@@ -19,9 +19,8 @@ namespace Pentago
             Pentago pentago = new Pentago(customBoard);
             */
 
-
-            AlphaBetaSort player1 = new AlphaBetaSort(Player.Player1, 3);
-            AlphaBeta player2 = new AlphaBeta(Player.Player2, 3);
+            AlphaBetaSort player1 = new AlphaBetaSort(Player.Player1, 5);
+            AlphaBeta player2 = new AlphaBeta(Player.Player2, 5);
 
             const double numOfSimulations = 1;
             double numWonByPlayer1 = 0;
@@ -60,7 +59,9 @@ namespace Pentago
             player2MoveTime = Math.Round(player2MoveTime, 2);
 
             Console.WriteLine("Avg movetime of Player1(" + player1.playerType.ToString() + "):" + player1MoveTime / numOfSimulations + "ms");
+            Console.WriteLine("Total tree Iterations:" + player1.treeIterations);
             Console.WriteLine("Avg movetime of Player2(" + player2.playerType.ToString() + "):" + player2MoveTime / numOfSimulations + "ms");
+            Console.WriteLine("Total tree Iterations:" + player2.treeIterations);
             Console.ReadLine();
 
         }
